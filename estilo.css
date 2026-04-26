@@ -1,0 +1,446 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+
+:root {
+    --primario:      #6c63ff;
+    --primario-dark: #5548e0;
+    --fondo:         #f0f2ff;
+    --blanco:        #ffffff;
+    --texto:         #2d2d2d;
+    --texto-suave:   #888;
+    --sombra:        0 4px 20px rgba(108, 99, 255, 0.12);
+    --radio:         16px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Nunito', sans-serif;
+    color: var(--texto);
+    min-height: 100vh;
+    transition: background 0.6s ease;
+}
+
+body.mood-neutral  { background: #f0f2ff; }
+body.mood-feliz    { background: #fff8e1; }
+body.mood-triste   { background: #e8f0fe; }
+body.mood-enojado  { background: #fce4e4; }
+body.mood-relajado { background: #e8f5e9; }
+
+body.mood-feliz    .cancion-card { background: #fff3cd; border-left: 4px solid #f9a825; }
+body.mood-triste   .cancion-card { background: #dce8fb; border-left: 4px solid #4895ef; }
+body.mood-enojado  .cancion-card { background: #fadadd; border-left: 4px solid #e53935; }
+body.mood-relajado .cancion-card { background: #d9f2e3; border-left: 4px solid #43aa8b; }
+
+body.mood-feliz    .estado-box { background: #fff3cd; color: #f57f17; border: 2px solid #f9a825; }
+body.mood-triste   .estado-box { background: #dce8fb; color: #1a56cc; border: 2px solid #4895ef; }
+body.mood-enojado  .estado-box { background: #fadadd; color: #b71c1c; border: 2px solid #e53935; }
+body.mood-relajado .estado-box { background: #d9f2e3; color: #1b5e20; border: 2px solid #43aa8b; }
+
+body.mood-feliz    .btn-play { background: #f9a825; }
+body.mood-triste   .btn-play { background: #4895ef; }
+body.mood-enojado  .btn-play { background: #e53935; }
+body.mood-relajado .btn-play { background: #43aa8b; }
+
+.navbar {
+    background: var(--blanco);
+    padding: 16px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--sombra);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--primario);
+    letter-spacing: -0.5px;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.btn-nav {
+    background: var(--primario);
+    color: white;
+    padding: 8px 18px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: background 0.2s;
+}
+
+.btn-nav:hover { background: var(--primario-dark); }
+
+.main-container {
+    display: flex;
+    gap: 24px;
+    padding: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.camara-section,
+.recomendaciones-section {
+    flex: 1;
+    background: var(--blanco);
+    border-radius: var(--radio);
+    padding: 28px;
+    box-shadow: var(--sombra);
+}
+
+h2 { font-size: 1.4rem; font-weight: 800; margin-bottom: 8px; }
+
+.subtitulo { color: var(--texto-suave); margin-bottom: 20px; font-size: 0.9rem; }
+
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #111;
+    margin: 16px 0;
+    aspect-ratio: 4/3;
+}
+
+#video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transform: scaleX(-1);
+}
+
+#canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: scaleX(-1);
+}
+
+.estado-box {
+    border-radius: 12px;
+    padding: 14px 20px;
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin-bottom: 20px;
+    border: 2px solid #e0e0e0;
+    background: var(--fondo);
+    transition: background 0.5s ease, color 0.4s ease, border 0.4s ease;
+    text-align: center;
+}
+
+.o-text { text-align: center; color: var(--texto-suave); font-size: 0.85rem; margin-bottom: 14px; }
+
+.botones-mood { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.btn-mood {
+    padding: 12px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: white;
+    transition: opacity 0.2s, transform 0.1s;
+}
+
+.btn-mood:hover    { opacity: 0.85; transform: translateY(-1px); }
+.btn-feliz         { background: #f9a825; }
+.btn-triste        { background: #4895ef; }
+.btn-enojado       { background: #e53935; }
+.btn-relajado      { background: #43aa8b; }
+
+#canciones-lista { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
+
+.cancion-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--fondo);
+    border-radius: 12px;
+    padding: 16px 18px;
+    transition: transform 0.2s, background 0.4s ease;
+}
+
+.cancion-card:hover { transform: translateY(-2px); }
+
+.cancion-info   { display: flex; flex-direction: column; gap: 4px; }
+.cancion-titulo  { font-weight: 800; font-size: 1rem; }
+.cancion-artista { color: var(--texto-suave); font-size: 0.85rem; }
+
+.cancion-genero {
+    font-size: 0.75rem;
+    background: var(--primario);
+    color: white;
+    padding: 2px 10px;
+    border-radius: 30px;
+    display: inline-block;
+    width: fit-content;
+}
+
+.btn-play {
+    background: var(--primario);
+    color: white;
+    padding: 8px 18px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    transition: opacity 0.2s, background 0.4s ease;
+}
+
+.btn-play:hover { opacity: 0.85; }
+
+.placeholder-msg { text-align: center; padding: 40px 20px; color: var(--texto-suave); font-size: 0.9rem; line-height: 1.6; }
+.cargando        { text-align: center; padding: 30px; color: var(--primario); font-weight: 700; }
+.error-msg       { text-align: center; padding: 20px; color: #e53935; font-weight: 600; }
+
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f0f2ff;
+    padding: 20px;
+}
+
+.auth-box {
+    background: var(--blanco);
+    border-radius: 24px;
+    padding: 40px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 20px 60px rgba(108, 99, 255, 0.15);
+}
+
+.auth-box .logo { font-size: 2rem; text-align: center; margin-bottom: 8px; }
+.auth-box h2    { text-align: center; margin-bottom: 28px; }
+
+.auth-box label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 6px;
+    margin-top: 16px;
+    font-size: 0.9rem;
+}
+
+.auth-box input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.auth-box input:focus { border-color: var(--primario); }
+
+.auth-box button {
+    width: 100%;
+    padding: 14px;
+    background: var(--primario);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    margin-top: 24px;
+    transition: background 0.2s;
+}
+
+.auth-box button:hover { background: var(--primario-dark); }
+
+.link-abajo { text-align: center; margin-top: 20px; font-size: 0.9rem; color: var(--texto-suave); }
+.link-abajo a { color: var(--primario); font-weight: 700; text-decoration: none; }
+
+.mensaje       { padding: 12px 16px; border-radius: 10px; margin-bottom: 16px; font-weight: 600; font-size: 0.9rem; }
+.mensaje.error { background: #ffe0e0; color: #c0392b; }
+.mensaje.exito { background: #e0f7ea; color: #27ae60; }
+.mensaje.exito a { color: var(--primario); font-weight: 700; }
+
+.admin-container {
+    max-width: 1100px;
+    margin: 32px auto;
+    padding: 0 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.admin-card {
+    background: var(--blanco);
+    border-radius: var(--radio);
+    padding: 28px;
+    box-shadow: var(--sombra);
+}
+
+.admin-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 16px;
+}
+
+.admin-grid .full-width { grid-column: 1 / -1; }
+
+.admin-card label { display: block; font-weight: 700; margin-bottom: 6px; font-size: 0.9rem; }
+
+.admin-card input,
+.admin-card select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.admin-card input:focus,
+.admin-card select:focus { border-color: var(--primario); }
+
+.btn-admin-submit {
+    background: var(--primario);
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 30px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-size: 0.95rem;
+}
+
+.btn-admin-submit:hover { background: var(--primario-dark); }
+
+.tabla-admin { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 0.9rem; }
+
+.tabla-admin th {
+    background: var(--fondo);
+    padding: 12px 14px;
+    text-align: left;
+    font-weight: 700;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.tabla-admin td { padding: 12px 14px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
+.tabla-admin tr:hover td { background: #fafafa; }
+
+.badge-estado { padding: 3px 12px; border-radius: 30px; font-size: 0.8rem; font-weight: 700; color: white; }
+.badge-feliz    { background: #f9a825; }
+.badge-triste   { background: #4895ef; }
+.badge-enojado  { background: #e53935; }
+.badge-relajado { background: #43aa8b; }
+
+.acciones-td { display: flex; gap: 8px; align-items: center; }
+
+.btn-editar {
+    background: var(--primario);
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 0.82rem;
+    transition: background 0.2s;
+}
+
+.btn-editar:hover { background: var(--primario-dark); }
+
+.btn-eliminar {
+    background: #e53935;
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 0.82rem;
+    transition: opacity 0.2s;
+}
+
+.btn-eliminar:hover { opacity: 0.8; }
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.modal-box {
+    background: var(--blanco);
+    border-radius: var(--radio);
+    padding: 32px;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.modal-box label { display: block; font-weight: 700; margin-bottom: 4px; font-size: 0.9rem; }
+
+.modal-box input,
+.modal-box select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    margin-bottom: 4px;
+}
+
+.modal-box input:focus,
+.modal-box select:focus { border-color: var(--primario); }
+
+.modal-botones { display: flex; gap: 10px; margin-top: 8px; }
+
+.btn-cancelar {
+    background: #eee;
+    color: var(--texto);
+    border: none;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-cancelar:hover { background: #ddd; }
+
+@media (max-width: 768px) {
+    .main-container     { flex-direction: column; padding: 16px; }
+    .navbar             { padding: 14px 20px; }
+    .botones-mood       { grid-template-columns: 1fr; }
+    .admin-grid         { grid-template-columns: 1fr; }
+    .admin-grid .full-width { grid-column: 1; }
+    .acciones-td        { flex-direction: column; }
+}
